@@ -1,0 +1,9 @@
+name: Commander
+main: karonus.commander.main
+author: Karonus
+version: New
+
+commands:
+  kcmd:
+    usage: /kcmd [command]
+    aliases: [cmd]
